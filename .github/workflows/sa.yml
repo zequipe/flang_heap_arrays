@@ -21,26 +21,12 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v6
 
-      - name: Cache atfl
-        id: cache-atfl
-        uses: actions/cache@v5
-        with:
-          path: /opt/arm/arm-toolchain-for-linux
-          key: ${{ runner.os }}-atfl
-
       - name: Install Arm Toolchain for Linux
-        if: steps.cache-atfl.outputs.cache-hit != 'true' && matrix.compiler == 'armflang'
+        if: matrix.compiler == 'armflang'
         run: bash ./install_atfl
 
-      - name: Cache LLVM Flang
-        id: cache-llvm
-        uses: actions/cache@v5
-        with:
-          path: /opt/flang
-          key: ${{ runner.os }}-llvm
-
       - name: Install LLVM Flang
-        if: steps.cache-llvm.outputs.cache-hit != 'true' && matrix.compiler == 'flang'
+        if: matrix.compiler == 'flang'
         run: bash ./install_flang
 
       - name: Install gfortran
