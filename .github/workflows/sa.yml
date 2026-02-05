@@ -18,10 +18,18 @@ jobs:
 
     steps:
 
-      - name: Clone Repository (Latest)
-        uses: actions/checkout@v6.0.1
+      - name: Clone Repository
+        uses: actions/checkout@v6
+
+      - name: Cache atfl
+        id: cache
+        uses: actions/cache@v5
+        with:
+          path: /opt/arm/arm-toolchain-for-linux
+          key: {{ runner.os }}-atfl
 
       - name: Install Arm Toolchain for Linux
+        if: steps.cache.outputs.cache-hit != 'true'
         run: bash ./install_atfl
 
       - name: Install gdb and git
