@@ -24,6 +24,9 @@ jobs:
       - name: Install Arm Toolchain for Linux
         run: bash ./install_atfl
 
+      - name: Install gdb and git
+        run: sudo apt install -y gdb git
+
       - name: Conduct the test
         run: |
           bash ./sa ${{ matrix.modify }} ${{ matrix.flag }}
