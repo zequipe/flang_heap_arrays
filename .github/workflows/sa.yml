@@ -54,5 +54,4 @@ jobs:
 
       - name: Conduct the test
         run: |
-          exit 0
-          #bash ./sa ${{ matrix.modify }} ${{ matrix.compiler }} ${{ matrix.flag }}
+          bash ./sa ${{ matrix.modify }} ${{ matrix.compiler }} ${{ matrix.flag }}
