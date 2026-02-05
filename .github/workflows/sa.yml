@@ -29,7 +29,7 @@ jobs:
           key: ${{ runner.os }}-atfl
 
       - name: Install Arm Toolchain for Linux
-        if: steps.cache-atfl.outputs.cache-hit != 'true'
+        if: steps.cache-atfl.outputs.cache-hit != 'true' && matrix.compiler == 'armflang'
         run: bash ./install_atfl
 
       - name: Cache LLVM Flang
@@ -40,11 +40,11 @@ jobs:
           key: ${{ runner.os }}-llvm
 
       - name: Install LLVM Flang
-        if: steps.cache-llvm.outputs.cache-hit != 'true'
+        if: steps.cache-llvm.outputs.cache-hit != 'true' && matrix.compiler == 'flang'
         run: cd /opt && bash ./install_flang
 
       - name: Install gfortran
-        uses: fortran-lang/setup-fortran@main
+        uses: fortran-lang/setup-fortran@main && matrix.compiler == 'gfortran'
         with:
           compiler: gcc
 
