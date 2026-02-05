@@ -44,7 +44,8 @@ jobs:
         run: bash ./install_flang
 
       - name: Install gfortran
-        uses: fortran-lang/setup-fortran@main && matrix.compiler == 'gfortran'
+        if: matrix.compiler == 'gfortran'
+        uses: fortran-lang/setup-fortran@main
         with:
           compiler: gcc
 
