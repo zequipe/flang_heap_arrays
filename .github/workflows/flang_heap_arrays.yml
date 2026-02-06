@@ -1,0 +1,49 @@
+name: Test LLVM Fortran compilers, check which flags are needed to force the automatic arrays on the heap
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+
+jobs:
+
+  test:
+    name: Run LLVM Flang tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+        compiler: [armflang, amdflang, flang]  # Compilers to test
+        flag: [mmlir, fno-stack-arrays]  # Optimization flags to test
+        exclude:
+          - os: ubuntu-latest
+            compiler: armflang
+          - os: ubuntu-24.04-arm
+            compiler: amdflang
+
+
+    steps:
+
+      - name: Clone Repository
+        uses: actions/checkout@v6
+
+      - name: Install Arm Toolchain for Linux
+        if: matrix.compiler == 'armflang'
+        run: bash ./install_atfl
+
+      - name: Install AMD AOMP Flang
+        if: matrix.compiler == 'amdflang'
+        run: bash ./install_aomp
+
+      - name: Install LLVM Flang
+        if: matrix.compiler == 'flang'
+        run: bash ./install_flang
+
+      - name: Install gdb and git
+        run: sudo apt update && sudo apt install -y gdb git
+
+      - name: Conduct the test
+        run: |
+          bash ./flang_heap_arrays ${{ matrix.compiler }} ${{ matrix.flag }}
