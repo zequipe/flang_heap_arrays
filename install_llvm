@@ -16,7 +16,16 @@ else  # Assume Linux
     sudo apt-get install -y clang-${VERSION_NUMBER} lldb-${VERSION_NUMBER} lld-${VERSION_NUMBER} flang-${VERSION_NUMBER}
     type flang-${VERSION_NUMBER}
     flang-${VERSION_NUMBER} --version
-
+    cd $(basename $(which flang-${VERSION_NUMBER})) || exit 1
+    if [[ -f flang ]]; then
+        echo "A flang executable already exists"
+        echo "Its version is:"
+        flang --version
+        echo "Backing up the existing flang executable to flang.bak"
+        sudo mv flang flang.bak
+    fi
+    echo "Creating a symbolic link named flang pointing to flang-${VERSION_NUMBER}"
+    sudo ln -s flang-${VERSION_NUMBER} flang
 fi
 
 # Verify installation
