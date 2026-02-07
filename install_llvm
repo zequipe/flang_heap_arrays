@@ -5,8 +5,9 @@
 VERSION_NUMBER="21"
 if [[ $(uname -s) == 'Darwin' ]] ; then  # macOS
     brew update || true
-    brew install flang
+    brew install flang lldb
     flang --version
+    lldb --version
 else  # Assume Linux
 
     wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
@@ -25,6 +26,7 @@ else  # Assume Linux
     fi
     echo "Creating a symbolic link named flang pointing to flang-${VERSION_NUMBER}"
     sudo ln -s flang-${VERSION_NUMBER} flang
+    sudo ln -s lldb-${VERSION_NUMBER} clang
 fi
 
 # Verify installation
