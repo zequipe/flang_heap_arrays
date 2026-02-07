@@ -79,7 +79,7 @@ done
 
 # Final messages
 echo "LLVM installation completed."
-for TOOL in flang clang lld; do
+for TOOL in flang ; #do clang lld; do
     echo -e "\nThe $TOOL version is:\n"
     $TOOL --version
     echo -e "\nThe path to $TOOL is:\n"
