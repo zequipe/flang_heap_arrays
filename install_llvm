@@ -19,7 +19,8 @@ else  # Assume Linux
 
 fi
 
-FLANG=$(find -L /opt -type f -name flang -exec test -x {} \; -print 2>/dev/null | sort | tail -n 1)
+find -L / -type f -name flang -exec test -x {} \; -print
+FLANG=$(find -L /opt -type f -name flang -exec test -x {} \; -print | sort | tail -n 1)
 echo "Found flang at: $FLANG"
 LLVM_DIR="$(dirname $(dirname $FLANG))"
 export PATH=$LLVM_DIR/bin:$PATH
