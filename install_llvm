@@ -5,9 +5,8 @@
 VERSION_NUMBER="21"
 if [[ $(uname -s) == 'Darwin' ]] ; then  # macOS
     brew update || true
-    brew install flang lldb
+    brew install flang
     flang --version
-    lldb --version
 else  # Assume Linux
 
     wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
