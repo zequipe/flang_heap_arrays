@@ -46,7 +46,7 @@ else  # Assume Linux
 
     # Install the packages (clang and lld are needed even if we use only flang).
     sudo apt update
-    sudo apt-get install -y llvm-${VERSION_NUMBER} flang-${VERSION_NUMBER} #clang-${VERSION_NUMBER}  lld-${VERSION_NUMBER}
+    sudo apt-get install -y llvm-${VERSION_NUMBER} flang-${VERSION_NUMBER} clang-${VERSION_NUMBER}  #lld-${VERSION_NUMBER}
 
     # Verify the installation
     for TOOL in flang ; do #clang lld; do
