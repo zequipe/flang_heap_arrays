@@ -20,14 +20,14 @@ else  # Assume Linux
 fi
 
 # Verify installation
-for tool in flang clang clang++; do
+for tool in flang ; do
     type $tool-${VERSION_NUMBER} > /dev/null 2>&1 || \
         { echo "$tool not found after the installation, which probably failed." >&2 ; exit 1; }
 done
 
 # Final messages
 echo "LLVM installation completed."
-for tool in flang clang clang++; do
+for tool in flang ; do
     echo -e "\nThe $tool version is:\n"
     $tool-${VERSION_NUMBER} --version
     echo -e "\nThe path to $tool is:\n"
