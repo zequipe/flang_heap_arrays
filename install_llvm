@@ -25,7 +25,7 @@ else  # Assume Linux
     fi
     echo "Creating a symbolic link named flang pointing to flang-${VERSION_NUMBER}"
     sudo ln -s flang-${VERSION_NUMBER} flang
-    sudo ln -s lldb-${VERSION_NUMBER} clang
+    sudo ln -s lldb-${VERSION_NUMBER} lldb
 fi
 
 # Verify installation
