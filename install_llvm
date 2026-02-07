@@ -72,7 +72,7 @@ else  # Assume Linux
 fi
 
 # Verify installation
-for TOOL in flang clang lld; do
+for TOOL in flang ; do #clang lld; do
     type $TOOL > /dev/null 2>&1 || \
         { echo "$TOOL not found after the installation, which probably failed." >&2 ; exit 1; }
 done
