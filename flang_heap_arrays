@@ -23,6 +23,9 @@ type $COMPILER
 $COMPILER --version
 
 rm -f rtest_i4_r8_d1_tst_c_o1
+
+echo "Compiling test with $COMPILER and flag $FLAG..."
+
 $COMPILER $FLAG -g \
     -DPRIMA_DEBUGGING=1 -DPRIMA_AGGRESSIVE_OPTIONS=0 -DPRIMA_INTEGER_KIND=32 -DPRIMA_REAL_PRECISION=64 -DPRIMA_QP_AVAILABLE=0 -DPRIMA_TESTDIM="'big'" \
     -o rtest_i4_r8_d1_tst_c_o1 \
@@ -63,5 +66,9 @@ $COMPILER $FLAG -g \
     ./testsuite/datetime.f90 \
     test_lincoa.f90 \
     test.F90
+
+echo "Compilation finished."
+
+echo "Running test with gdb..."
 
 gdb -return-child-result -batch -iex "set auto-load safe-path /"  -ex run -ex where -ex quit ./rtest_i4_r8_d1_tst_c_o1

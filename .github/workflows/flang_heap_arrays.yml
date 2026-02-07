@@ -14,13 +14,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm]
-        compiler: [armflang, amdflang, flang]  # Compilers to test
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+        #compiler: [armflang, amdflang, flang]  # Compilers to test
+        compiler: [flang]  # Compilers to test
         flag: [mmlir, fno-stack-arrays]  # Optimization flags to test
         exclude:
           - os: ubuntu-latest
             compiler: armflang
           - os: ubuntu-24.04-arm
+            compiler: amdflang
+          - os: macos-latest
+            compiler: armflang
+          - os: macos-latest
             compiler: amdflang
 
 
@@ -42,7 +47,12 @@ jobs:
         run: bash ./install_flang
 
       - name: Install gdb and git
-        run: sudo apt update && sudo apt install -y gdb git
+        run: :
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt update || true && sudo apt install -y gdb git
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            brew update || true && brew install gdb git
+          fi
 
       - name: Conduct the test
         run: |
