@@ -16,7 +16,7 @@ else  # Assume Linux
     sudo apt-get install -y clang-${VERSION_NUMBER} lldb-${VERSION_NUMBER} lld-${VERSION_NUMBER} flang-${VERSION_NUMBER}
     type flang-${VERSION_NUMBER}
     flang-${VERSION_NUMBER} --version
-    cd $(basename $(which flang-${VERSION_NUMBER})) || exit 1
+    cd $(dirname $(which flang-${VERSION_NUMBER})) || exit 1
     if [[ -f flang ]]; then
         echo "A flang executable already exists"
         echo "Its version is:"
