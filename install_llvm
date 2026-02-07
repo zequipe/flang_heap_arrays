@@ -4,7 +4,9 @@
 
 if [[ $(uname -s) == 'Darwin' ]] ; then  # macOS
     brew update || true
-    brew install llvm
+    brew install flang
+    flang --version
+    flang-21 --version
     export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 else  # Assume Linux
 
@@ -12,11 +14,13 @@ else  # Assume Linux
     echo "deb http://apt.llvm.org/$(lsb_release -sc)/ llvm-toolchain-$(lsb_release -sc)-21 main" | sudo tee /etc/apt/sources.list.d/llvm-toolchain-21.list
     sudo apt update || true
     sudo apt-get install -y clang-21 lldb-21 lld-21 flang-21
+    flang --version
+    flang-21 --version
 
 fi
 
 #find -L / -type f -name flang -exec test -x {} \; -print
-FLANG=$(find -L /opt -type f -name flang -exec test -x {} \; -print | sort | tail -n 1)
+FLANG=$(find -L /opt -type f -name flang-21 -exec test -x {} \; -print | sort | tail -n 1)
 echo "Found flang at: $FLANG"
 LLVM_DIR="$(dirname $(dirname $FLANG))"
 export PATH=$LLVM_DIR/bin:$PATH
