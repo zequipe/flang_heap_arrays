@@ -48,7 +48,7 @@ jobs:
 
       - name: Install LLVM Flang
         if: matrix.compiler == 'flang'
-        run: bash ./install_flang
+        run: bash ./install_llvm
 
       - name: Install gdb and git
         run: |

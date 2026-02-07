@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Usage: bash install_llvm
+
+
+if [[ $(uname -s) == 'Darwin' ]] ; then  # macOS
+    brew update || true
+    brew install llvm
+else  # Assume Linux
+
+    #TMP_DIR="$(mktemp -d)"
+    #cd "$TMP_DIR" || exit 1
+    bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+    # Remove the temporary directory
+    #rm -rf "$TMP_DIR"
+
+fi
+
+#LLVM_DIR="$(dirname $(dirname $(command -v clang)))"
+#export PATH=$LLVM_DIR/bin:$PATH
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LLVM_DIR/lib
+
+# Verify installation
+for tool in flang clang clang++; do
+    type $tool > /dev/null 2>&1 || \
+        { echo "$tool not found after the installation, which probably failed." >&2 ; exit 1; }
+done
+
+# Final messages
+echo "LLVM installation completed."
+for tool in flang clang clang++; do
+    echo -e "\nThe $tool version is:\n"
+    $tool --version
+    echo -e "\nThe path to $tool is:\n"
+    command -v $tool
+done
+
+
+# Set environment variable for subsequent steps
+# N.B.: The following lines will not work if this script is invoked with sudo.
+# Put $LLVM_DIR/bin to the beginning of PATH, in case there is another flang in PATH, e.g., from AOCC.
+LLVM_DIR="$(dirname $(dirname $(command -v clang)))"
+echo "PATH=$LLVM_DIR/bin:$PATH" >> "$GITHUB_ENV"
+echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LLVM_DIR/lib" >> "$GITHUB_ENV"
+
+## Export relevant environment variables for GitHub Actions
+#env | grep -i 'llvm\|flang\|clang' >> "$GITHUB_ENV"
