@@ -30,7 +30,6 @@ else  # Assume Ubuntu
     else
         VERSION_NUMBER=$((21 + (CURRENT_YEAR - 2026) * 2 ))
     fi
-    VERSION_NUMBER=22  # Try 22
     echo "Using the version number ${VERSION_NUMBER} based on the current date."
 
     # Add the LLVM repository and the GPG key.
