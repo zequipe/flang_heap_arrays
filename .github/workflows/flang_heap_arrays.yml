@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, macos-lates, macos-15-intel, windows-latest, windows-11-arm]
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel, windows-latest, windows-11-arm]
         compiler: [armflang, amdflang, flang]  # Compilers to test
         flag: [mmlir, fno-stack-arrays]  # Optimization flags to test
         exclude:
@@ -78,8 +78,10 @@ jobs:
         run: |
           if [[ "${{ matrix.os }}" == windows-latest ]] ; then
             echo "We are on ${{ matrix.os }}. LLVM installed by choco may not provide flang."
-            LLVM_VERSION=$(llvm-config --version 2>/dev/null) ; LLVM_VERSION="${LLVM_VERSION%%.*}"
-            echo "LLVM version: $LLVM_VERSION"
+            # Infer the version of LLVM from llvm-ar. We should have used `llvm-config --version`,
+            # but it is not available on windows-latest after LLVM 21.1.8 is installed with choco.
+            LLVM_VERSION=$(llvm-ar --version 2>/dev/null | grep -oP 'LLVM version \K[0-9]+') || LLVM_VERSION=65536
+            echo "LLVM version inferred from llvm-ar: $LLVM_VERSION"
             FLANG_PATH=$(command -v flang 2>/dev/null || echo "NOT_FOUND")
             echo "Flang path: $FLANG_PATH"
             if [[ "$LLVM_VERSION" -lt 22 && "$FLANG_PATH" == "NOT_FOUND" ]] ; then
