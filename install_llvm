@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Usage: bash install_llvm
-# N.B.: VERSION_NUMBER is used only on Linux; on macOS, Homebrew will always install the latest
-# version of LLVM as of 2026.
+# N.B.: VERSION_NUMBER is used only on Linux. On other platforms, the latest version will be installed.
 # The script will determine the version number based on the current date and the LLVM release
 # schedule, which is updated every six months as of 2026, in March and September. The version number
 # in September 2025 is 21.
@@ -21,11 +20,9 @@ if [[ "$OSTYPE" == darwin* ]] ; then
     brew install llvm flang lld  # The latest version will be installed, which is 21 in September 2025.
 elif [[ "$OSTYPE" == cygwin* || "$OSTYPE" == win* || "$OSTYPE" == msys* ]]; then
     echo "We are on Windows."
-    choco uninstall llvm -y || true
-    choco install llvm -y --version=21.1.8
-    #choco upgrade llvm
-    ls -al "/c/Program Files/LLVM/bin/" || true
-    ls -al "C:\Program Files (x86)\LLVM\bin" || true
+    choco upgrade chocolatey -y || true
+    choco install llvm -y
+    choco upgrade llvm -y  # Update to the latest version
 else  # Assume Ubuntu
 
     echo "We assume that we are on Ubuntu."
